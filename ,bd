@@ -2,8 +2,8 @@ cut -d ' ' -f 5 < .git/logs/HEAD \
   | jq '[strftime("%U"), strftime("%a")]' \
   | jq -s 'group_by(.[0]) | .[]' \
   | jq 'group_by(.[1])' \
-  | jq 'map({(.[0] | .[1]): length}) | reduce . as $day ({}; . * $day)) '
-  # | jq '.,map(@text "\(.Sun//0) \(.Mon//0) \(.Tue//0) \(.Wed//0) \(.Thu//0) \(.Fri//0) \(.Sat//0)") | .[]' 
-  # | cut -d "\"" -f 2 \
-  # | column -t \
-  # | tac
+  | jq 'map({(.[0] | .[1]): length})' \
+  | jq '[reduce .[] as $day ({}; . * $day)]' \
+  | jq 'map(@text "\(.Sun//0) \(.Mon//0) \(.Tue//0) \(.Wed//0) \(.Thu//0) \(.Fri//0) \(.Sat//0)") | .[]' \
+  | cut -d "\"" -f 2 \
+  | column -t
