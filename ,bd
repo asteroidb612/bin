@@ -1,4 +1,5 @@
-cut -d ' ' -f 5 < .git/logs/HEAD \
+grep -v rebase < .git/logs/HEAD \
+  | cut -d ' ' -f 5  \
   | jq '[strftime("%U"), strftime("%a")]' \
   | jq -s 'group_by(.[0]) | .[]' \
   | jq 'group_by(.[1])' \
